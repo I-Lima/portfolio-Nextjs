@@ -26,31 +26,21 @@ const ServerListProjects = () => {
   }, []);
 
   const _renderLoading = () => {
-    return (
-      <div className="flex flex-col w-full gap-20 items-center lg:flex-row lg:w-screen">
-        <div className="animate-pulse flex flex-col mt-4 transition-transform w-2/3 justify-start bg-customGray/70 p-6 rounded-lg">
-          <div className="bg-customGray h-8 w-1/4" />
-          <div className="bg-customGray h-32 w-/4 mt-4" />
+    return Array.from({ length: 3 }).map((_, i) => (
+      <div
+        key={i}
+        className="animate-pulse flex flex-col mt-4 transition-transform w-2/3 justify-start bg-customGray/70 p-6 rounded-lg"
+      >
+        <div className="bg-customGray h-8 w-1/4" />
+        <div className="bg-customGray h-32 w-/4 mt-4" />
 
-          <div className="mt-4 flex flex-row gap-4">
-            <div className="bg-customGray h-8 w-24 rounded" />
-            <div className="bg-customGray h-8 w-24 rounded" />
-            <div className="bg-customGray h-8 w-24 rounded" />
-          </div>
-        </div>
-
-        <div className="animate-pulse flex flex-col mt-4 transition-transform w-2/3 justify-start bg-customGray/70 p-6 rounded-lg">
-          <div className="bg-customGray h-8 w-1/4" />
-          <div className="bg-customGray h-32 w-/4 mt-4" />
-
-          <div className="mt-4 flex flex-row gap-4">
-            <div className="bg-customGray h-8 w-24 rounded" />
-            <div className="bg-customGray h-8 w-24 rounded" />
-            <div className="bg-customGray h-8 w-24 rounded" />
-          </div>
+        <div className="mt-4 flex flex-row gap-4">
+          {[...Array(3)].map((_, j) => (
+            <div key={j} className="bg-customGray h-8 w-24 rounded" />
+          ))}
         </div>
       </div>
-    );
+    ));
   };
 
   const _renderError = () => {
@@ -75,16 +65,22 @@ const ServerListProjects = () => {
         <button
           key={i}
           className="
-            flex flex-col min-w-sm max-w-sm flex-wrap border-[1px] rounded-lg p-4 border-black/50 dark:border-white/50 shadow-lg dark:shadow-customGray/10 transition-transform duration-100 hover:scale-105
-            lg:max-w-lg lg:m-4 lg:min-h-64 lg:justify-center
-          "
+              flex flex-col min-w-sm max-w-sm flex-wrap border-[1px] rounded-lg p-4 border-black/50 dark:border-white/50 shadow-lg dark:shadow-customGray/10 transition-transform duration-100 hover:scale-105
+              lg:max-w-lg lg:m-4 lg:min-h-64 lg:justify-center
+            "
           onClick={() => window.open(item.html_url)}
         >
           <h3 className="flex flex-row text-xl border-b-2 md:text-2xl">
             {item.name}
           </h3>
 
-          <div className="mt-4 justify-center items-center lg:px-2">
+          <div
+            className="
+                flex flex-col mt-4 justify-center items-center
+                md:flex-1 md:justify-around
+                lg:px-2
+              "
+          >
             <p className="text-lg text-justify px-4">{item.description}</p>
 
             <div className="flex flex-wrap mt-4 gap-2 lg:gap-4">

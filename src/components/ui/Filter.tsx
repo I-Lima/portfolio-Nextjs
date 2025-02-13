@@ -2,8 +2,13 @@ import { useState } from "react";
 import { IoFilter } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { useExperienceStore } from "@/hooks/stateHooks";
+import { dictionariesProps } from "@/types/dictionaries";
 
-export default function Filter() {
+export default function Filter({
+  dictionary,
+}: {
+  dictionary: dictionariesProps["filter"];
+}) {
   const [open, setOpen] = useState(false);
   const [openItems, setOpenItems] = useState<number[]>([]);
   const { filterData, filter, setFilter } = useExperienceStore(
@@ -101,7 +106,7 @@ export default function Filter() {
         onClick={_handleOpen}
       >
         <IoFilter size={30} />
-        <p className="text-xl">Filter</p>
+        <p className="text-xl">{dictionary.filter}</p>
       </div>
 
       <div className="md:hidden" onClick={_handleOpen}>
