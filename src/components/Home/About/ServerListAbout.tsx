@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from "react";
 import aboutServices from "@/services/aboutServices";
-import { aboutProps } from "@/types/about";
+import { aboutReturnProps } from "@/types/about";
+import { dictionariesProps } from "@/types/dictionaries";
 import Image from "next/image";
 import { GITHUB, LINKEDIN, MAIL, MEDIUM } from "@/constant/urls";
 import Photo from "../../ui/Photo";
+import { Language } from "@/types/experiences";
 const dimensions = {
   height: 0,
   width: 0,
 };
 
-const ServerListAbout = () => {
-  const [dataAbout, setDataAbout] = useState<aboutProps>();
+interface Props {
+  dictionary: dictionariesProps["about"];
+  lang: Language;
+}
+
+const ServerListAbout = ({ dictionary, lang }: Props) => {
+  const [dataAbout, setDataAbout] = useState<aboutReturnProps>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await aboutServices.getAboutData();
+        const data = await aboutServices.getAboutData(lang);
         if (data) setDataAbout(data);
       } catch (error) {
         setIsError(true);
@@ -34,7 +41,7 @@ const ServerListAbout = () => {
 
   const _renderLoading = () => {
     return (
-      <div className="flex flex-col w-screen gap-20 md:flex-row">
+      <div className="flex flex-col w-screen gap-20 lg:flex-row">
         <div className="animate-pulse flex flex-col mt-4 transition-transform w-2/3 justify-start">
           <div className="flex flex-row items-center ">
             <div className="bg-customGray h-16 w-1/2 mr-24" />
@@ -57,16 +64,31 @@ const ServerListAbout = () => {
           </div>
         </div>
 
-        <div className="animate-pulse flex flex-col mt-4 transition-transform w-2/3 justify-start">
-          <div className="bg-customGray h-8 w-56" />
+        <div className="flex flex-col md:flex-row md:justify-between">
+          <div className="animate-pulse flex flex-col mt-4 transition-transform w-2/3 justify-start">
+            <div className="bg-customGray h-8 w-56" />
 
-          <div className="mt-4 flex flex-row gap-4">
-            <div className="bg-customGray h-20 w-20 rounded" />
-            <div className="bg-customGray h-20 w-20 rounded" />
-            <div className="bg-customGray h-20 w-20 rounded" />
-            <div className="bg-customGray h-20 w-20 rounded" />
-            <div className="bg-customGray h-20 w-20 rounded" />
-            <div className="bg-customGray h-20 w-20 rounded" />
+            <div className="mt-4 flex flex-row gap-4 md:flex-wrap md:max-w-md">
+              <div className="bg-customGray h-16 w-16 rounded lg:h-20 lg:w-20" />
+              <div className="bg-customGray h-16 w-16 rounded lg:h-20 lg:w-20" />
+              <div className="bg-customGray h-16 w-16 rounded lg:h-20 lg:w-20" />
+              <div className="bg-customGray h-16 w-16 rounded lg:h-20 lg:w-20" />
+              <div className="bg-customGray h-16 w-16 rounded lg:h-20 lg:w-20" />
+            </div>
+          </div>
+
+          <div className="animate-pulse flex flex-col mt-4 transition-transform w-2/3 justify-start">
+            <div className="bg-customGray h-8 w-56" />
+
+            <div className="mt-4 flex flex-col gap-4 md:flex-wrap">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="flex flex-row gap-2 align-center">
+                  <div className="bg-customGray h-4 w-16" />
+                  <div className="bg-customGray h-1 w-2 rounded self-center" />
+                  <div className="bg-customGray h-4 w-20" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -78,7 +100,7 @@ const ServerListAbout = () => {
       <div className="flex flex-col items-start justify-center">
         <Image src="/gifs/error.gif" alt="error gif" width={300} height={300} />
 
-        <p>An error has occurred. Try later</p>
+        <p>{dictionary.msgError}</p>
       </div>
     );
   };
@@ -101,7 +123,7 @@ const ServerListAbout = () => {
     if (isError) return _renderError();
 
     return (dataAbout?.skills || []).map((skill, i) => (
-      <div key={i} className="relative h-8 w-8 md:h-10 md:w-10 lg:w-12 lg:h-12">
+      <div key={i} className="relative h-8 w-8 md:h-11 md:w-11 lg:w-12 lg:h-12">
         <Image src={skill.url} layout="fill" alt="my skills" />
       </div>
     ));
@@ -113,14 +135,14 @@ const ServerListAbout = () => {
     return (dataAbout?.languages || []).map((skill, i) => (
       <div key={i} className="flex flex-row gap-3">
         <Image
-          src={"/" + skill.name + ".png"}
+          src={"/images/" + skill.icon + ".png"}
           width={32}
           height={32}
           alt="language flag"
         />
-        <text className="lg:text-lg font-bold">
+        <p className="text-md lg:text-lg font-bold">
           {skill.name} - {skill.level}
-        </text>
+        </p>
       </div>
     ));
   };
@@ -137,14 +159,12 @@ const ServerListAbout = () => {
       <div
         className="
           flex flex-col
-          lg:max-w-7xl lg:flex-1 lg:mr-10
+          lg:max-w-4xl lg:flex-1 lg:mr-10
         "
       >
         <div
           className="
-            flex flex-row items-center justify-between
-            md:max-w-md
-            lg:max-w-xl
+            flex flex-row items-center justify-between w-full
           "
         >
           <h2
@@ -153,7 +173,7 @@ const ServerListAbout = () => {
               md:text-4xl
             "
           >
-            {"I'm Ingrid Lima"}
+            {dictionary.name} Ingrid Lima
           </h2>
 
           <Photo />
@@ -167,7 +187,7 @@ const ServerListAbout = () => {
             onClick={() => window.open(LINKEDIN)}
           >
             <Image
-              src="linkedin_icon_transparent.svg"
+              src="/images/linkedin_icon_transparent.svg"
               alt="linkedin icon"
               layout="fill"
               objectFit="cover"
@@ -179,7 +199,7 @@ const ServerListAbout = () => {
             onClick={() => window.open(GITHUB.PROFILE)}
           >
             <Image
-              src="github_icon_transparent.svg"
+              src="/images/github_icon_transparent.svg"
               alt="github icon"
               layout="fill"
               objectFit="cover"
@@ -191,7 +211,7 @@ const ServerListAbout = () => {
             onClick={() => window.open(MEDIUM)}
           >
             <Image
-              src="medium_icon_transparent.svg"
+              src="/images/medium_icon_transparent.svg"
               alt="medium icon"
               layout="fill"
               objectFit="cover"
@@ -203,7 +223,7 @@ const ServerListAbout = () => {
             onClick={() => window.open(MAIL)}
           >
             <Image
-              src="mail_icon_transparent.svg"
+              src="/images/mail_icon_transparent.svg"
               alt="mail icon"
               layout="fill"
               objectFit="cover"
@@ -212,12 +232,19 @@ const ServerListAbout = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-10">
+      <div
+        className="
+          flex flex-col gap-10 w-full
+          md:flex-row md:justify-between
+          lg:max-w-lg  lg:flex-1
+          xl:max-w-xl xl:mr-10
+        "
+      >
         <div
           className="
-            flex flex-col max-w-xl justify-start mt-10
+            flex flex-col justify-start mt-10
+            md:max-w-md
             lg:flex-1
-            lg:max-w-2xl
           "
         >
           <h2
@@ -226,13 +253,12 @@ const ServerListAbout = () => {
               lg:text-4xl
             "
           >
-            My Skills
+            {dictionary.skills}
           </h2>
 
           <div
             className="
               flex flex-wrap items-center justify-start mt-8 gap-4 ml-4
-              md:max-w-sm
               lg:max-w-full
             "
           >
@@ -242,9 +268,9 @@ const ServerListAbout = () => {
 
         <div
           className="
-            flex flex-col max-w-xl justify-start mt-10
+            flex flex-col justify-start mt-10
             md:max-w-full
-            lg:max-w-2xl lg:flex-1
+            lg:flex-1
           "
         >
           <h2
@@ -253,7 +279,7 @@ const ServerListAbout = () => {
               lg:text-4xl
             "
           >
-            My Languages
+            {dictionary.languages}
           </h2>
 
           <div className="flex flex-col items-start justify-start mt-8 gap-4 ml-4">

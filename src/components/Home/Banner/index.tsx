@@ -1,23 +1,30 @@
 "use client";
 
+import { useDictionary } from "@/context/DictionaryContext";
+import { bannerProps } from "@/types/dictionaries";
 import Image from "next/image";
 
 export default function Banner() {
-  function _renderMainComponent() {
+  const { dictionary: dictionaries } = useDictionary();
+  const dictionary = dictionaries?.banner;
+
+  if (!dictionary) return null;
+
+  function _renderMainComponent(dictionary: bannerProps) {
     return (
       <>
         <div
           className="
             mx-14 my-12
-            md:my-20 md:mx-12
-            lg:my-24 lg:text-4xl
+            md:my-24 md:mx-4
+            lg:my-28 lg:text-4xl
           "
         >
           <div className="flex flex-row items-center justify-start">
-            <h1 className="pr-6">Hi</h1>
+            <h1 className="pr-6">{dictionary.hi}</h1>
             <div className="relative w-8 h-8">
               <Image
-                src="hand.svg"
+                src="/images/hand.svg"
                 alt="hand icon"
                 className="animate-wave"
                 layout="fill"
@@ -27,13 +34,13 @@ export default function Banner() {
 
           <div className="flex flex-col pt-12 space-y-4">
             <div className="flex flex-row">
-              <p>{"I'm"}</p>
+              <p>{dictionary.myName}</p>
 
               <p className="font-bold ml-2">Ingrid Lima</p>
             </div>
 
             <div className="flex flex-col items-start md:flex-row md:items-center ">
-              <p className="md:w-[130px]">{"And I'm a"}</p>
+              <p className="md:w-[130px]">{dictionary.iAm}</p>
 
               <div
                 className="
@@ -59,16 +66,18 @@ export default function Banner() {
       "
     >
       <div className="flex items-center bg-customBlue rounded-xl rotate-2">
-        <div className="mx-18 my-2">{_renderMainComponent()}</div>
+        <div className="mx-18 my-2 invisible">
+          {_renderMainComponent(dictionary)}
+        </div>
       </div>
 
       <div className="absolute bg-bgWhite dark:bg-black rounded-xl border-white">
-        <div className=" mx-8 my-10 md:my-16 lg:mx-16">
+        <div className="mx-8 my-10 md:my-20 md:mx-12 lg:mx-26 lg:my-16">
           <div className="flex flex-row items-center justify-start">
-            <h1 className="pr-6">Hi</h1>
+            <h1 className="pr-6">{dictionary.hi}</h1>
             <div className=" relative w-8 h-8 lg:w-12 lg:h-12 ">
               <Image
-                src="hand.svg"
+                src="/images/hand.svg"
                 alt="hand icon"
                 className="animate-wave"
                 layout="fill"
@@ -78,7 +87,7 @@ export default function Banner() {
 
           <div className="flex flex-col pt-12 space-y-4 lg:mb-8">
             <div className="flex flex-row lg:flex-col lg:space-y-2">
-              <p>{"I'm"}</p>
+              <p>{dictionary.myName}</p>
 
               <p
                 className="
@@ -91,7 +100,7 @@ export default function Banner() {
             </div>
 
             <div className=" flex flex-col items-start md:flex-row md:items-center lg:items-start">
-              <p className="flex flex-row items-center"> {"And I'm a"} </p>
+              <p className="flex flex-row items-center"> {dictionary.iAm} </p>
 
               <div
                 className="

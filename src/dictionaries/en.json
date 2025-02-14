@@ -1,0 +1,46 @@
+{
+  "about": {
+    "section": "About",
+     "msgError": "An error has occurred. Try later",
+     "name": "My name is",
+     "skills": "My Skills",
+     "languages": "My Languages"
+  },
+  "banner": {
+    "hi": "Hi",
+    "myName": "My name is",
+    "iAm": "I'm a"
+  },
+  "contact": {
+    "section": "Contact",
+    "description": "If you have an interesting project or an innovative idea, I’d be happy to chat with you. I’m always looking for new connections and opportunities to collaborate on creative and challenging projects."
+  },
+  "experiences": {
+    "section": "Experiences",
+    "more": "More",
+    "currently": "Corrently",
+    "companyButton": "Company website",
+    "projectButton": "Project website"
+  },
+  "home": {
+    "moreInfo": "More Information"
+  },
+  "projects": {
+    "section": "Projects",
+    "more": "More",
+    "msgError": "An error has occurred. Try later"
+  },
+  "footer": {
+    "developedBy": "Developed by"
+  },
+  "search": {
+    "placeholder": "Search by enterprise, role or description..."
+  },
+  "filter": {
+    "filter": "Filter",
+    "type": "type"
+  },
+  "languageSwitch": {
+    "language": "Language"
+  }
+}

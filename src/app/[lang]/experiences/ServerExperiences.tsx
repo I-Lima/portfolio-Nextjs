@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import experienceServices from "@/services/experienceServices";
-import { experienceHistoryProps } from "@/types/experiences";
+import { experienceHistoryReturnProps } from "@/types/experiences";
 import Image from "next/image";
 import Tag from "@/components/ui/Tag";
 import ButtonCustom from "@/components/ui/Button";
 import { useExperienceStore } from "@/hooks/stateHooks";
+import { dictionariesProps } from "@/types/dictionaries";
 const dimensions = {
   height: 0,
   width: 0,
 };
 
-const ServerExperiences = () => {
+const ServerExperiences = (dictionary: dictionariesProps, lang: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const { setExperienceData, filteredExperienceData } = useExperienceStore(
@@ -20,8 +21,11 @@ const ServerExperiences = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await experienceServices.getAllExperienceData();
-        if (data) setExperienceData(data);
+        const data = await experienceServices.getAllExperienceData({
+          dictionary: dictionary["experiences"],
+          lang: lang,
+        });
+        if (data) setExperienceData(data, dictionary["filter"]);
       } catch (error) {
         setIsError(true);
       } finally {
@@ -79,7 +83,7 @@ const ServerExperiences = () => {
     );
   };
 
-  const _renderList = (data: experienceHistoryProps[]) => {
+  const _renderList = (data: experienceHistoryReturnProps[]) => {
     return data.map((item, i) => {
       const tagArray = item.tags || [];
 
@@ -98,7 +102,7 @@ const ServerExperiences = () => {
             </div>
 
             <div className="flex flex-col items-start justify-start lg:max-w-xl">
-              <p className="border-b-2 text-2xl lg:w-14">Skills</p>
+              <p className="border-b-2 text-2xl">Skills</p>
 
               <div className="flex flex-wrap gap-4 mt-4 px-4 lg:px-6">
                 {tagArray.map((tag, index) => (
@@ -111,7 +115,7 @@ const ServerExperiences = () => {
           {item.project_website && (
             <div className="flex mt-8">
               <ButtonCustom
-                title="Project website"
+                title={dictionary.experiences.projectButton}
                 onClick={() =>
                   item.project_website && window.open(item.project_website)
                 }
@@ -146,7 +150,7 @@ const ServerExperiences = () => {
 
               {item.company_website && (
                 <ButtonCustom
-                  title="Company website"
+                  title={dictionary.experiences.companyButton}
                   onClick={() =>
                     item.company_website && window.open(item.company_website)
                   }

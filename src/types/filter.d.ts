@@ -1,5 +1,6 @@
-import { experienceProps } from "./experiences";
+import { experienceReturnProps } from "./experiences";
 import { ExperienceState } from "./state";
+import { dictionariesProps } from "./dictionaries";
 
 export type filterItem = { value: string; data: Array<string> };
 export type selectedOptionsProps = { [key: string]: string[] };
@@ -13,11 +14,12 @@ type set = {
         ) => ExperienceState | Partial<ExperienceState>),
     replace?: boolean | undefined,
   ): void;
-  (arg0: () => { experienceData: experienceProps[] }): void;
+  (arg0: () => { experienceData: experienceReturnProps[] }): void;
 };
 export type setFilterDataProps = {
-  data: experienceProps[];
+  data: experienceReturnProps[];
   set: set;
+  dictionary: dictionariesProps.filter;
 };
 
 export type filterResultsProps = {

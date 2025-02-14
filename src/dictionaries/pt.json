@@ -1,0 +1,46 @@
+{
+  "about": {
+    "section": "Sobre",
+    "msgError": "Ocorreu um erro. Tente novamente mais tarde",
+    "name": "Meu nome é",
+    "skills": "Minhas skills",
+    "languages": "Meus idiomas"
+  },
+  "banner": {
+    "hi": "Oi",
+    "myName": "Meu nome é",
+    "iAm": "Eu sou"
+  },
+  "contact": {
+    "section": "Contato",
+    "description": "Se você tem um projeto interessante ou uma ideia inovadora, ficarei feliz em conversar com você. Estou sempre em busca de novas conexões e oportunidades para colaborar em projetos criativos e desafiadores."
+  },
+  "experiences": {
+    "section": "Experiências",
+    "more": "Saber mais",
+    "currently": "Atualmente",
+    "companyButton": "Site da empresa",
+    "projectButton": "Site do projeto"
+  },
+  "home": {
+    "moreInfo": "Mais Informações"
+  },
+  "projects": {
+    "section": "Projetos",
+    "more": "Saber mais",
+    "msgError": "Ocorreu um erro. Tente novamente mais tarde"
+  },
+  "footer": {
+    "developedBy": "Desenvolvido por"
+  },
+  "search": {
+    "placeholder": "Busque por empresa, cargo ou descrição..."
+  },
+  "filter": {
+    "filter": "Filtro",
+    "type": "tipo"
+  },
+  "languageSwitch": {
+    "language": "Idioma"
+  }
+}

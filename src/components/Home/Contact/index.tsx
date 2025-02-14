@@ -1,8 +1,16 @@
+"use client";
+
 import SectionTitle from "@/components/ui/SectionTitle";
 import { LINKEDIN, MAIL } from "@/constant/urls";
+import { useDictionary } from "@/context/DictionaryContext";
 import Image from "next/image";
 
 export default function Contact() {
+  const { dictionary: dictionaries } = useDictionary();
+  const dictionary = dictionaries?.contact;
+
+  if (!dictionary) return null;
+
   function _renderCardComponent(
     children?: React.ReactNode,
     onClick?: () => void,
@@ -26,26 +34,19 @@ export default function Contact() {
   return (
     <div id="contact" className="flex flex-col max-w-screen w-full py-8 mb-20">
       <div className="flex flex-col items-start">
-        <SectionTitle title="Contact" />
+        <SectionTitle title={dictionary.section} />
       </div>
 
       <div className="flex flex-col items-center mt-12">
         <p className="text-lg text-center max-w-2xl">
-          If you have an interesting project or an innovative idea, I’d be happy
-          to chat with you. I’m always looking for new connections and
-          opportunities to collaborate on creative and challenging projects.
+          {dictionary.description}
         </p>
 
-        <div
-          className="
-            flex flex-col gap-4 mt-24
-            lg:flex-row lg:gap-12
-          "
-        >
+        <div className="flex flex-col gap-4 mt-24 md:flex-row md:gap-12">
           {_renderCardComponent(
             <div className="flex flex-col items-center">
               <Image
-                src="linkedin_bgd.svg"
+                src="/images/linkedin_bgd.svg"
                 alt="linkedin icon"
                 width={60}
                 height={60}
@@ -59,7 +60,7 @@ export default function Contact() {
           {_renderCardComponent(
             <div className="flex flex-col items-center">
               <Image
-                src="mail_icon_2.svg"
+                src="/images/mail_icon_2.svg"
                 alt="Mail icon"
                 width={60}
                 height={60}

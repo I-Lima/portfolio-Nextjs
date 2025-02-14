@@ -1,11 +1,19 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+import { DictionaryProvider } from "@/context/DictionaryContext";
+import { Locale } from "../../i18n-config";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  lang,
+}: {
+  children: React.ReactNode;
+  lang: Locale;
+}) {
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      {children}
+      <DictionaryProvider lang={lang}>{children}</DictionaryProvider>
     </ThemeProvider>
   );
 }

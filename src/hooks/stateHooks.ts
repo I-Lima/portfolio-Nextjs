@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { ExperienceState } from "@/types/state";
-import { experienceHistoryProps, experienceProps } from "@/types/experiences";
+import {
+  experienceHistoryReturnProps,
+  experienceReturnProps,
+} from "@/types/experiences";
 import {
   filterItem,
   filterResultsProps,
@@ -9,13 +12,14 @@ import {
 } from "@/types/filter";
 
 export const useExperienceStore = create<ExperienceState>((set, get) => ({
-  experienceData: [] as experienceProps[],
-  filteredExperienceData: [] as experienceProps[],
+  experienceData: [] as experienceReturnProps[],
+  filteredExperienceData: [] as experienceReturnProps[],
   filterData: [] as filterItem[],
   filter: {} as selectedOptionsProps,
   query: "",
-  setExperienceData: (data) => setFilterData({ data, set }),
-  setFilterData: (data) => setFilterData({ data, set }),
+  setExperienceData: (data, dictionary) =>
+    setFilterData({ data, set, dictionary }),
+  setFilterData: (data, dictionary) => setFilterData({ data, set, dictionary }),
   setFilter: (filter) => {
     set(() => ({ filter }));
     filterResults({ set, get });
@@ -33,11 +37,11 @@ export const useExperienceStore = create<ExperienceState>((set, get) => ({
  * @param {function} set - The function to update the filter and experience data.
  * @return {void} Updates the filter and experience data using the provided set function.
  */
-const setFilterData = ({ data, set }: setFilterDataProps): void => {
+const setFilterData = ({ data, set, dictionary }: setFilterDataProps): void => {
   const tagSet = new Set<string>();
   const typeSet = new Set<string>();
 
-  data.forEach((experience: experienceProps) => {
+  data.forEach((experience: experienceReturnProps) => {
     experience.history.forEach((history) => {
       typeSet.add(history.type);
       history.tags.forEach((tag) => {
@@ -52,7 +56,7 @@ const setFilterData = ({ data, set }: setFilterDataProps): void => {
       data: Array.from(tagSet),
     },
     {
-      value: "type",
+      value: dictionary.type || "type",
       data: Array.from(typeSet),
     },
   ];
@@ -76,7 +80,7 @@ const filterResults = ({ set, get }: filterResultsProps): void => {
   const lowerCaseQuery = query.toLowerCase();
 
   const filteredResults = experienceData
-    .filter((exp: experienceProps) => {
+    .filter((exp: experienceReturnProps) => {
       if (query.trim() === "") return true;
 
       const matchesEnterprise = exp.enterprise
@@ -90,11 +94,11 @@ const filterResults = ({ set, get }: filterResultsProps): void => {
 
       return matchesEnterprise || matchesHistory;
     })
-    .map((exp: experienceProps) => {
+    .map((exp: experienceReturnProps) => {
       if (!filter) return exp;
 
       const filteredHistory = exp.history.filter(
-        (historyItem: experienceHistoryProps) => {
+        (historyItem: experienceHistoryReturnProps) => {
           const hasSkill = filter.skill
             ? filter.skill.some((skill: string) =>
                 historyItem.tags.includes(skill),
@@ -114,7 +118,7 @@ const filterResults = ({ set, get }: filterResultsProps): void => {
         return null;
       }
     })
-    .filter((result): result is experienceProps => result !== null);
+    .filter((result): result is experienceReturnProps => result !== null);
 
   set({ filteredExperienceData: filteredResults });
 };
